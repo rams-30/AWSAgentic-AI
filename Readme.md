@@ -26,7 +26,7 @@ AgentCore runs your agent as a managed container. You give it an ECR image URI, 
 
 Here's the core Terraform module:
 
-```hcl
+```
 resource "aws_bedrockagentcore_agent_runtime" "this" {
   agent_runtime_name = "${var.tenant_name}_${var.environment}_agentcore"
   role_arn           = var.agentcore_execution_role_arn
@@ -57,7 +57,7 @@ Nothing wild. The interesting part is that `MODEL_ID` can be either a foundation
 
 I used the [Strands Agents SDK](https://github.com/strands-agents/sdk-python) because it felt like the most straightforward way to build tool-using agents on Bedrock.
 
-```python
+```
 from strands import Agent, tool
 from strands.models import BedrockModel
 from bedrock_agentcore.runtime import BedrockAgentCoreApp
@@ -107,7 +107,7 @@ The `BedrockAgentCoreApp` gives you the runtime wrapper — it handles the HTTP 
 
 ### The Dockerfile
 
-```dockerfile
+```
 FROM public.ecr.aws/docker/library/python:3.12-slim
 WORKDIR /app
 
@@ -132,7 +132,7 @@ Small note: the OTel distro is optional but gives you X-Ray tracing out of the b
 
 The GitLab CI pipeline uses OIDC to assume an IAM role (no static credentials), builds the Docker image, pushes to ECR, and runs `terraform apply`.
 
-```yaml
+```
 stages:
   - setup
   - plan
